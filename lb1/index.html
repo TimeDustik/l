@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Конструктор резюме</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d0000 100%);
+            color: #ffffff;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            background: rgba(220, 20, 60, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            border: 2px solid #dc143c;
+            box-shadow: 0 8px 32px rgba(220, 20, 60, 0.3);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            color: #dc143c;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            margin-bottom: 10px;
+        }
+
+        .form-section {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border: 1px solid #dc143c;
+            box-shadow: 0 4px 20px rgba(220, 20, 60, 0.2);
+        }
+
+        .form-section h2 {
+            color: #dc143c;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            border-bottom: 2px solid #dc143c;
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #ffffff;
+            font-weight: bold;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #333;
+            border-radius: 8px;
+            background: #1a1a1a;
+            color: #ffffff;
+            font-size: 14px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #dc143c;
+            box-shadow: 0 0 10px rgba(220, 20, 60, 0.5);
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #dc143c, #b91c3c);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            margin: 10px 5px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(220, 20, 60, 0.4);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(220, 20, 60, 0.6);
+            background: linear-gradient(45deg, #b91c3c, #dc143c);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(45deg, #333, #555);
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(45deg, #555, #777);
+        }
+
+        .error {
+            color: #ff6b6b;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .success {
+            color: #51cf66;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .resume-display {
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            padding: 40px;
+            border-radius: 15px;
+            margin-top: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 2px solid #dc143c;
+        }
+
+        .resume-header {
+            text-align: center;
+            border-bottom: 3px solid #dc143c;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .resume-name {
+            font-size: 2.2em;
+            color: #dc143c;
+            margin-bottom: 10px;
+        }
+
+        .resume-section {
+            margin-bottom: 25px;
+        }
+
+        .resume-section h3 {
+            color: #dc143c;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            border-left: 4px solid #dc143c;
+            padding-left: 15px;
+        }
+
+        .experience-item, .education-item {
+            background: rgba(220, 20, 60, 0.05);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 3px solid #dc143c;
+        }
+
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .skill-tag {
+            background: #dc143c;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .loading {
+            text-align: center;
+            color: #dc143c;
+            font-size: 18px;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .form-section {
+                padding: 20px;
+            }
+        }
+
+        .dynamic-form {
+            border: 1px dashed #dc143c;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            background: rgba(220, 20, 60, 0.05);
+        }
+
+        .remove-btn {
+            background: #ff4757;
+            padding: 5px 10px;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Конструктор резюме</h1>
+            <p>Створіть професійне резюме за декілька хвилин</p>
+        </div>
+
+        <div id="app">
+            <div class="form-section">
+                <h2>📋 Особиста інформація</h2>
+                <div class="form-group">
+                    <label for="fullName">Повне ім'я *</label>
+                    <input type="text" id="fullName" required>
+                    <div class="error" id="fullNameError"></div>
+                </div>
+                <div class="form-group">
+                    <label for="age">Вік *</label>
+                    <input type="number" id="age" min="16" max="100" required>
+                    <div class="error" id="ageError"></div>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input type="email" id="email" required>
+                    <div class="error" id="emailError"></div>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Телефон *</label>
+                    <input type="tel" id="phone" required>
+                    <div class="error" id="phoneError"></div>
+                </div>
+                <div class="form-group">
+                    <label for="address">Адреса</label>
+                    <textarea id="address" rows="2"></textarea>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>💼 Досвід роботи</h2>
+                <div id="experienceContainer">
+                    <div class="dynamic-form">
+                        <div class="form-group">
+                            <label>Посада *</label>
+                            <input type="text" class="exp-position" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Компанія *</label>
+                            <input type="text" class="exp-company" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Період роботи *</label>
+                            <input type="text" class="exp-period" placeholder="2020-2023" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Опис обов'язків</label>
+                            <textarea class="exp-description" rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-secondary" onclick="addExperience()">+ Додати досвід</button>
+            </div>
+
+            <div class="form-section">
+                <h2>🎓 Освіта</h2>
+                <div id="educationContainer">
+                    <div class="dynamic-form">
+                        <div class="form-group">
+                            <label>Навчальний заклад *</label>
+                            <input type="text" class="edu-institution" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Спеціальність *</label>
+                            <input type="text" class="edu-degree" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Роки навчання *</label>
+                            <input type="text" class="edu-years" placeholder="2018-2022" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Додаткова інформація</label>
+                            <textarea class="edu-additional" rows="2"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-secondary" onclick="addEducation()">+ Додати освіту</button>
+            </div>
+
+            <div class="form-section">
+                <h2>⚡ Навички</h2>
+                <div class="form-group">
+                    <label for="skills">Навички (розділені комами) *</label>
+                    <textarea id="skills" rows="3" placeholder="JavaScript, HTML, CSS, React, Node.js" required></textarea>
+                    <div class="error" id="skillsError"></div>
+                </div>
+                <div class="form-group">
+                    <label for="languages">Мови</label>
+                    <textarea id="languages" rows="2" placeholder="Українська (рідна), Англійська (B2), Польська (A2)"></textarea>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>📝 Додаткова інформація</h2>
+                <div class="form-group">
+                    <label for="summary">Короткий опис/Мета</label>
+                    <textarea id="summary" rows="4" placeholder="Розкажіть про себе, свої цілі та мотивацію..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="hobbies">Хобі та інтереси</label>
+                    <textarea id="hobbies" rows="2" placeholder="Читання, спорт, подорожі..."></textarea>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin: 30px 0;">
+                <button type="button" class="btn" onclick="generateResume()">🚀 Створити резюме</button>
+                <button type="button" class="btn btn-secondary" onclick="fillSampleData()">📄 Заповнити приклад</button>
+                <button type="button" class="btn btn-secondary" onclick="clearAll()">🗑️ Очистити все</button>
+            </div>
+        </div>
+
+        <div id="resumeDisplay" class="hidden"></div>
+    </div>
+
+    <script>
+        "use strict";
+
+        const validators = (() => {
+            const createValidator = (pattern) => (value) => pattern.test(value);
+            
+            return {
+                email: createValidator(/^[^\s@]+@[^\s@]+\.[^\s@]+$/),
+                phone: createValidator(/^[\+]?[0-9\-\(\)\s]{10,}$/),
+                name: createValidator(/^[а-яіїєґА-ЯІЇЄҐA-Za-z\s]{2,}$/),
+                required: (value) => value && value.trim().length > 0
+            };
+        })();
+
+        const dataProcessor = (() => {
+            const processAge = (value) => {
+                const age = parseInt(value);
+                return (age >= 16 && age <= 100) ? age : null;
+            };
+
+            const processSkills = (value) => {
+                return value.split(',').map(skill => skill.trim()).filter(skill => skill.length > 0);
+            };
+
+            const processText = (value) => {
+                return value ? value.trim() : '';
+            };
+
+            return { processAge, processSkills, processText };
+        })();
+
+        // Класи для ООП структури
+        class PersonalInfo {
+            constructor(fullName, age, email, phone, address = '') {
+                this._fullName = fullName;
+                this._age = age;
+                this._email = email;
+                this._phone = phone;
+                this._address = address;
+            }
+
+            get fullName() { return this._fullName; }
+            set fullName(value) { 
+                if (!validators.name(value)) throw new Error('Некоректне ім\'я');
+                this._fullName = value; 
+            }
+
+            get age() { return this._age; }
+            set age(value) { 
+                const processedAge = dataProcessor.processAge(value);
+                if (!processedAge) throw new Error('Некоректний вік');
+                this._age = processedAge; 
+            }
+
+            get email() { return this._email; }
+            set email(value) { 
+                if (!validators.email(value)) throw new Error('Некоректний email');
+                this._email = value; 
+            }
+
+            get phone() { return this._phone; }
+            set phone(value) { 
+                if (!validators.phone(value)) throw new Error('Некоректний телефон');
+                this._phone = value; 
+            }
+
+            get address() { return this._address; }
+            set address(value) { this._address = dataProcessor.processText(value); }
+
+            validate() {
+                const errors = [];
+                if (!validators.required(this._fullName) || !validators.name(this._fullName)) {
+                    errors.push({ field: 'fullName', message: 'Введіть коректне повне ім\'я' });
+                }
+                if (!validators.email(this._email)) {
+                    errors.push({ field: 'email', message: 'Введіть коректний email' });
+                }
+                if (!validators.phone(this._phone)) {
+                    errors.push({ field: 'phone', message: 'Введіть коректний номер телефону' });
+                }
+                if (!this._age || this._age < 16 || this._age > 100) {
+                    errors.push({ field: 'age', message: 'Введіть коректний вік (16-100)' });
+                }
+                return errors;
+            }
+        }
+
+        class Experience {
+            constructor(position, company, period, description = '') {
+                this.position = position;
+                this.company = company;
+                this.period = period;
+                this.description = description;
+            }
+
+            validate() {
+                const errors = [];
+                if (!validators.required(this.position)) {
+                    errors.push('Введіть посаду');
+                }
+                if (!validators.required(this.company)) {
+                    errors.push('Введіть назву компанії');
+                }
+                if (!validators.required(this.period)) {
+                    errors.push('Введіть період роботи');
+                }
+                return errors;
+            }
+
+            render() {
+                return `
+                    <div class="experience-item">
+                        <h4>${this.position} - ${this.company}</h4>
+                        <p><strong>Період:</strong> ${this.period}</p>
+                        ${this.description ? `<p>${this.description}</p>` : ''}
+                    </div>
+                `;
+            }
+        }
+
+        class Education {
+            constructor(institution, degree, years, additional = '') {
+                this.institution = institution;
+                this.degree = degree;
+                this.years = years;
+                this.additional = additional;
+            }
+
+            validate() {
+                const errors = [];
+                if (!validators.required(this.institution)) {
+                    errors.push('Введіть навчальний заклад');
+                }
+                if (!validators.required(this.degree)) {
+                    errors.push('Введіть спеціальність');
+                }
+                if (!validators.required(this.years)) {
+                    errors.push('Введіть роки навчання');
+                }
+                return errors;
+            }
+
+            render() {
+                return `
+                    <div class="education-item">
+                        <h4>${this.institution}</h4>
+                        <p><strong>Спеціальність:</strong> ${this.degree}</p>
+                        <p><strong>Роки навчання:</strong> ${this.years}</p>
+                        ${this.additional ? `<p>${this.additional}</p>` : ''}
+                    </div>
+                `;
+            }
+        }
+
+        class Skills {
+            constructor(technicalSkills = [], languages = []) {
+                this.technicalSkills = technicalSkills;
+                this.languages = languages;
+            }
+
+            addSkill(skill) {
+                if (!this.technicalSkills.includes(skill)) {
+                    this.technicalSkills.push(skill);
+                }
+            }
+
+            validate() {
+                const errors = [];
+                if (this.technicalSkills.length === 0) {
+                    errors.push({ field: 'skills', message: 'Додайте хоча б одну навичку' });
+                }
+                return errors;
+            }
+
+            renderTechnical() {
+                return this.technicalSkills.map(skill => 
+                    `<span class="skill-tag">${skill}</span>`
+                ).join('');
+            }
+
+            renderLanguages() {
+                return this.languages.length > 0 ? 
+                    `<p><strong>Мови:</strong> ${this.languages.join(', ')}</p>` : '';
+            }
+        }
+
+        class Resume {
+            constructor() {
+                this.personalInfo = null;
+                this.experiences = [];
+                this.education = [];
+                this.skills = null;
+                this.summary = '';
+                this.hobbies = '';
+            }
+
+            setPersonalInfo(personalInfo) {
+                this.personalInfo = personalInfo;
+            }
+
+            addExperience(experience) {
+                this.experiences.push(experience);
+            }
+
+            addEducation(education) {
+                this.education.push(education);
+            }
+
+            setSkills(skills) {
+                this.skills = skills;
+            }
+
+            setSummary(summary) {
+                this.summary = dataProcessor.processText(summary);
+            }
+
+            setHobbies(hobbies) {
+                this.hobbies = dataProcessor.processText(hobbies);
+            }
+
+            validate() {
+                let allErrors = [];
+
+                if (this.personalInfo) {
+                    allErrors = allErrors.concat(this.personalInfo.validate());
+                }
+
+                if (this.skills) {
+                    allErrors = allErrors.concat(this.skills.validate());
+                }
+
+                this.experiences.forEach((exp, index) => {
+                    const expErrors = exp.validate();
+                    if (expErrors.length > 0) {
+                        allErrors.push({ field: `experience-${index}`, message: expErrors.join(', ') });
+                    }
+                });
+
+                this.education.forEach((edu, index) => {
+                    const eduErrors = edu.validate();
+                    if (eduErrors.length > 0) {
+                        allErrors.push({ field: `education-${index}`, message: eduErrors.join(', ') });
+                    }
+                });
+
+                return allErrors;
+            }
+
+            render() {
+                if (!this.personalInfo || !this.skills) {
+                    throw new Error('Недостатньо даних для створення резюме');
+                }
+
+                return `
+                    <div class="resume-display">
+                        <div class="resume-header">
+                            <h1 class="resume-name">${this.personalInfo.fullName}</h1>
+                            <p><strong>Вік:</strong> ${this.personalInfo.age} років</p>
+                            <p><strong>Email:</strong> ${this.personalInfo.email} | <strong>Телефон:</strong> ${this.personalInfo.phone}</p>
+                            ${this.personalInfo.address ? `<p><strong>Адреса:</strong> ${this.personalInfo.address}</p>` : ''}
+                        </div>
+
+                        ${this.summary ? `
+                            <div class="resume-section">
+                                <h3>📝 Про мене</h3>
+                                <p>${this.summary}</p>
+                            </div>
+                        ` : ''}
+
+                        ${this.experiences.length > 0 ? `
+                            <div class="resume-section">
+                                <h3>💼 Досвід роботи</h3>
+                                ${this.experiences.map(exp => exp.render()).join('')}
+                            </div>
+                        ` : ''}
+
+                        ${this.education.length > 0 ? `
+                            <div class="resume-section">
+                                <h3>🎓 Освіта</h3>
+                                ${this.education.map(edu => edu.render()).join('')}
+                            </div>
+                        ` : ''}
+
+                        <div class="resume-section">
+                            <h3>⚡ Навички</h3>
+                            <div class="skills-list">
+                                ${this.skills.renderTechnical()}
+                            </div>
+                            ${this.skills.renderLanguages()}
+                        </div>
+
+                        ${this.hobbies ? `
+                            <div class="resume-section">
+                                <h3>🎯 Хобі та інтереси</h3>
+                                <p>${this.hobbies}</p>
+                            </div>
+                        ` : ''}
+
+                        <div style="text-align: center; margin-top: 40px;">
+                            <button class="btn" onclick="editResume()">✏️ Редагувати</button>
+                            <button class="btn btn-secondary" onclick="saveResume()">💾 Зберегти</button>
+                            <button class="btn btn-secondary" onclick="printResume()">🖨️ Друкувати</button>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        let currentResume = new Resume();
+        let experienceCount = 1;
+        let educationCount = 1;
+
+        function addExperience() {
+            experienceCount++;
+            const container = document.getElementById('experienceContainer');
+            const newForm = document.createElement('div');
+            newForm.className = 'dynamic-form';
+            newForm.innerHTML = `
+                <div class="form-group">
+                    <label>Посада *</label>
+                    <input type="text" class="exp-position" required>
+                </div>
+                <div class="form-group">
+                    <label>Компанія *</label>
+                    <input type="text" class="exp-company" required>
+                </div>
+                <div class="form-group">
+                    <label>Період роботи *</label>
+                    <input type="text" class="exp-period" placeholder="2020-2023" required>
+                </div>
+                <div class="form-group">
+                    <label>Опис обов'язків</label>
+                    <textarea class="exp-description" rows="3"></textarea>
+                </div>
+                <button type="button" class="btn remove-btn" onclick="removeExperience(this)">🗑️ Видалити</button>
+            `;
+            container.appendChild(newForm);
+        }
+
+        function removeExperience(button) {
+            button.parentElement.remove();
+        }
+
+        function addEducation() {
+            educationCount++;
+            const container = document.getElementById('educationContainer');
+            const newForm = document.createElement('div');
+            newForm.className = 'dynamic-form';
+            newForm.innerHTML = `
+                <div class="form-group">
+                    <label>Навчальний заклад *</label>
+                    <input type="text" class="edu-institution" required>
+                </div>
+                <div class="form-group">
+                    <label>Спеціальність *</label>
+                    <input type="text" class="edu-degree" required>
+                </div>
+                <div class="form-group">
+                    <label>Роки навчання *</label>
+                    <input type="text" class="edu-years" placeholder="2018-2022" required>
+                </div>
+                <div class="form-group">
+                    <label>Додаткова інформація</label>
+                    <textarea class="edu-additional" rows="2"></textarea>
+                </div>
+                <button type="button" class="btn remove-btn" onclick="removeEducation(this)">🗑️ Видалити</button>
+            `;
+            container.appendChild(newForm);
+        }
+
+        function removeEducation(button) {
+            button.parentElement.remove();
+        }
+
+        function clearErrors() {
+            document.querySelectorAll('.error').forEach(el => el.textContent = '');
+        }
+
+        function displayErrors(errors) {
+            clearErrors();
+            errors.forEach(error => {
+                const errorElement = document.getElementById(error.field + 'Error');
+                if (errorElement) {
+                    errorElement.textContent = error.message;
+                }
+            });
+        }
+
+        function generateResume() {
+            try {
+                clearErrors();
+                currentResume = new Resume();
+
+                const personalInfo = new PersonalInfo(
+                    document.getElementById('fullName').value,
+                    document.getElementById('age').value,
+                    document.getElementById('email').value,
+                    document.getElementById('phone').value,
+                    document.getElementById('address').value
+                );
+
+                currentResume.setPersonalInfo(personalInfo);
+
+                const experienceForms = document.querySelectorAll('#experienceContainer .dynamic-form');
+                experienceForms.forEach(form => {
+                    const position = form.querySelector('.exp-position').value;
+                    const company = form.querySelector('.exp-company').value;
+                    const period = form.querySelector('.exp-period').value;
+                    const description = form.querySelector('.exp-description').value;
+
+                    if (position || company || period) {
+                        const experience = new Experience(position, company, period, description);
+                        currentResume.addExperience(experience);
+                    }
+                });
+
+                const educationForms = document.querySelectorAll('#educationContainer .dynamic-form');
+                educationForms.forEach(form => {
+                    const institution = form.querySelector('.edu-institution').value;
+                    const degree = form.querySelector('.edu-degree').value;
+                    const years = form.querySelector('.edu-years').value;
+                    const additional = form.querySelector('.edu-additional').value;
+
+                    if (institution || degree || years) {
+                        const education = new Education(institution, degree, years, additional);
+                        currentResume.addEducation(education);
+                    }
+                });
+
+                const skillsText = document.getElementById('skills').value;
+                const languagesText = document.getElementById('languages').value;
+                
+                const technicalSkills = dataProcessor.processSkills(skillsText);
+                const languages = languagesText ? dataProcessor.processSkills(languagesText) : [];
+                
+                const skills = new Skills(technicalSkills, languages);
+                currentResume.setSkills(skills);
+
+                currentResume.setSummary(document.getElementById('summary').value);
+                currentResume.setHobbies(document.getElementById('hobbies').value);
+
+                const errors = currentResume.validate();
+                if (errors.length > 0) {
+                    displayErrors(errors);
+                    alert('❌ Будь ласка, виправте помилки у формі');
+                    return;
+                }
+
+                const resumeHtml = currentResume.render();
+                const resumeDisplay = document.getElementById('resumeDisplay');
+                resumeDisplay.innerHTML = resumeHtml;
+                resumeDisplay.classList.remove('hidden');
+
+
+                resumeDisplay.scrollIntoView({ behavior: 'smooth' });
+
+                alert('✅ Резюме успішно створено!');
+                console.log('Resume generated:', currentResume);
+
+            } catch (error) {
+                console.error('Error generating resume:', error);
+                alert('❌ Помилка при створенні резюме: ' + error.message);
+            }
+        }

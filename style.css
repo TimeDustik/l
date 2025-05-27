@@ -1,0 +1,43 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4; /* Світлий фон */
+    color: #333; /* Темний текст */
+    margin: 0;
+    padding: 0;
+}
+
+#app {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff; /* Білий фон для контейнера */
+    border-radius: 8px; /* Закруглені кути */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Тінь */
+}
+
+h1 {
+    text-align: center;
+    color: #ff4757; /* Яскравий червоний колір для заголовка */
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column; /* Вертикальне вирівнювання кнопок */
+    align-items: center; /* Центрування кнопок */
+    margin-top: 20px; /* Відстань зверху */
+}
+
+.project-button {
+    display: inline-block;
+    padding: 15px 30px; /* Внутрішні відступи */
+    margin: 10px; /* Відстань між кнопками */
+    background-color: #007bff; /* Синій фон для кнопок */
+    color: #fff; /* Білий текст */
+    text-decoration: none; /* Без підкреслення */
+    border-radius: 5px; /* Закруглені кути */
+    transition: background-color 0.3s; /* Анімація при наведенні */
+}
+
+.project-button:hover {
+    background-color: #0056b3; /* Темніший синій при наведенні */
+}

@@ -1,0 +1,68 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #121212; /* Темний фон */
+    color: #e0e0e0; /* Світлий текст */
+    margin: 0;
+    padding: 0;
+}
+
+#app {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #1e1e1e; /* Темніший фон для контейнера */
+    border-radius: 8px; /* Закруглені кути */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Тінь */
+}
+
+h1 {
+    text-align: center;
+    color: #ff4757; /* Яскравий червоний колір для заголовка */
+}
+
+input, button {
+    margin: 5px;
+    padding: 10px;
+    border: 1px solid #ff4757; /* Червона рамка */
+    background-color: #333; /* Темний фон для елементів */
+    color: #fff; /* Білий текст */
+    border-radius: 4px; /* Закруглені кути */
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s; /* Анімація при наведенні */
+}
+
+input:focus, button:focus {
+    outline: none;
+    border-color: #ff4757; /* Червона рамка при фокусі */
+}
+
+input:hover, button:hover {
+    background-color: #444; /* Світліший фон при наведенні */
+}
+
+.movie-card {
+    border: 1px solid #ff4757; /* Червона рамка для карток */
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #2a2a2a; /* Темніший фон для карток */
+    border-radius: 8px; /* Закруглені кути */
+    transition: transform 0.2s; /* Анімація при наведенні */
+}
+
+.movie-card:hover {
+    transform: scale(1.02); /* Збільшення картки при наведенні */
+}
+
+.movie-card img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px; /* Закруглені кути для зображень */
+}
+
+.movie-card h3 {
+    color: #ff4757; /* Яскравий червоний колір для заголовків карток */
+}
+
+.movie-card p {
+    color: #b0b0b0; /* Світліший текст для опису */
+}

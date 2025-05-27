@@ -1,0 +1,40 @@
+body {
+    background-color: #ffccff; /* Темно-рожевий фон */
+    color: #4a004a; /* Темний текст */
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+input[type="text"] {
+    padding: 10px;
+    margin: 10px;
+    border: 2px solid #4a004a;
+    border-radius: 5px;
+}
+
+button {
+    padding: 10px 15px;
+    background-color: #4a004a;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #6a006a;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    padding: 10px;
+    margin: 5px 0;
+    background-color: #fff;
+    border: 1px solid #4a004a;
+    border-radius: 5px;
+    cursor: pointer;
+}

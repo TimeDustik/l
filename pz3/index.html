@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Практична робота 3: OOP в JavaScript</title>
+<style>
+  body {
+    background-color: #121212;
+    color: #e53935;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 20px;
+    user-select: none;
+  }
+  h1 {
+    color: #ff3d3d;
+    text-align: center;
+    margin-bottom: 20px;
+    text-shadow: 0 0 8px #ff3d3d;
+  }
+  button {
+    background-color: #b71c1c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 12px 20px;
+    margin: 8px 10px 8px 0;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 5px rgba(255, 61, 61, 0.5);
+  }
+  button:hover {
+    background-color: #ff5252;
+    box-shadow: 0 3px 8px rgba(255, 82, 82, 0.7);
+  }
+  #log {
+    background-color: #1e1e1e;
+    color: #f44336;
+    border-radius: 6px;
+    padding: 15px;
+    margin-top: 20px;
+    height: 280px;
+    overflow-y: auto;
+    font-family: Consolas, monospace;
+    white-space: pre-wrap;
+    line-height: 1.4;
+    box-shadow: inset 0 0 10px #900000;
+  }
+  section {
+    max-width: 640px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+</style>
+</head>
+<body>
+  <h1>Практична робота No3: OOP в JavaScript</h1>
+  <section>
+    <button id="addUser Btn" aria-label="Додати користувача">Додати користувача</button>
+    <button id="addAdminBtn" aria-label="Додати адміністратора">Додати адміністратора</button>
+    <button id="showAllBtn" aria-label="Показати всіх користувачів і адміністраторів">Показати всіх</button>
+
+    <div id="log" aria-live="polite" role="log" aria-atomic="true" tabindex="0"></div>
+  </section>
+
+<script>
+"use strict";
+const logElement = document.getElementById('log');
+
+// Utility: лог у блок и консоль
+function log(text) {
+  console.log(text);
+  logElement.innerHTML += text + "<br>"; // Используем innerHTML для переноса строк
+  logElement.scrollTop = logElement.scrollHeight; // Прокрутка вниз
+}
+
+// 2.1 Объектный литерал с методом и this
+const car = {
+  brand: "Toyota",
+  year: 2020,
+  displayInfo() {
+    log(`Автомобіль: ${this.brand}, Рік: ${this.year}`);
+  }
+};
+car.displayInfo();
+
+// 2.2 Объект с методом, использующим this и bind()
+const person = {
+  name: "Іван",
+  sayHello() {
+    log(`Привіт, мене звуть ${this.name}`);
+  }
+};
+// Демонстрация bind чтобы сохранить контекст this, если метод передается как callback
+setTimeout(person.sayHello.bind(person), 100);
+
+// 3.1 Функция-конструктор Person с методом в прототипе
+function Person(name, age) {
+  this.name = name;
+  this.age = age;
+}
+Person.prototype.greet = function() {
+  log(`Привіт, я ${this.name} і мені ${this.age} років.`);
+};
+const person1 = new Person("Олена", 28);
+person1.greet();
+
+// 3.2 ES6 класс Student наследуемый от Person
+class Student extends Person {
+  constructor(name, age, grade) {
+    super(name, age);
+    this.grade = grade;
+  }
+  displayInfo() {
+    log(`Студент: ${this.name}, Вік: ${this.age}, Оцінка: ${this.grade}`);
+  }
+}
+const student1 = new Student("Андрій", 22, "A");
+student1.greet();
+student1.displayInfo();
+
+// 3.3 Геттеры и сеттеры в классе User для инкапсуляции
+class User {
+  constructor(name, age, profession = "") {
+    this._name = name;
+    this._age = age;
+    this._profession = profession;
+  }
+  get name() {
+    return this._name;
+  }
+  set name(newName) {
+    if (newName && typeof newName === "string") {
+      this._name = newName;
+    } else {
+      log("Невірне ім'я.");
+    }
+  }
+  get age() {
+    return this._age;
+  }
+  set age(newAge) {
+    if (Number.isInteger(newAge) && newAge > 0) {
+      this._age = newAge;
+    } else {
+      log("Вік має бути цілим числом більшим за 0.");
+    }
+  }
+  get profession() {
+    return this._profession;
+  }
+  set profession(newProfession) {
+    if(typeof newProfession === "string") {
+      this._profession = newProfession;
+    }
+  }
+  display() {
+    log(`Користувач: ${this._name}, Вік: ${this._age}, Професія: ${this._profession || "не вказана"}`);
+  }
+}
+
+// Наследование класса Admin от User с добавлением роли и переопределением display()
+class Admin extends User {
+  constructor(name, age, profession, role) {
+    super(name, age, profession);
+    this.role = role;
+  }
+  display() {
+    log(`Адміністратор: ${this._name}, Вік: ${this._age}, Професія: ${this._profession || "не вказана"}, Роль: ${this.role}`);
+  }
+}
+
+// Хранилище пользователей
+const usersLibrary = [];
+
+// Функция для валидации имени (строка, не пустая)
+function validateName(name) {
+  return typeof name === "string" && name.trim().length > 0;
+}
+
+// Валидация возраста (целое > 0)
+function validateAge(age) {
+  const n = Number(age);
+  return Number.isInteger(n) && n > 0;
+}
+
+// Общая функция добавления пользователя с диалогами prompt
+function addUser (isAdmin = false) {
+  let name = prompt("Введіть ім'я користувача:");
+  if (!validateName(name)) {
+    alert("Ім'я повинно бути непорожнім рядком.");
+    return;
+  }
+  let ageStr = prompt("Введіть вік (ціле число > 0):");
+  if (!validateAge(ageStr)) {
+    alert("Вік повинен бути цілим числом більшим за 0.");
+    return;
+  }
+  const age = Number(ageStr);
+  let profession = prompt("Введіть професію (необов'язково):") || "";
+  if (isAdmin) {
+    let role = prompt("Введіть роль адміністратора (наприклад, 'moderator', 'manager'):");
+    if (!validateName(role)) {
+      alert("Роль адміністратора повинна бути непорожнім рядком.");
+      return;
+    }
+    const admin = new Admin(name, age, profession, role);
+    usersLibrary.push(admin);
+    alert(`Адміністратор ${name} доданий успішно!`);
+    log(`Додано адміністратора: ${name}, вік ${age}, роль: ${role}`);
+  } else {
+    const user = new User(name, age, profession);
+    usersLibrary.push(user);
+    alert(`Користувач ${name} доданий успішно!`);
+    log(`Додано користувача: ${name}, вік ${age}`);
+  }
+}
+
+// Показать всех пользователей и админов
+function showAllUsers() {
+  if (usersLibrary.length === 0) {
+    alert("Список користувачів порожній.");
+    return;
+  }
+  let message = "Список користувачів і адміністраторів:\n\n";
+  usersLibrary.forEach((user, index) => {
+    let roleInfo = "";
+    if (user instanceof Admin) {
+      roleInfo = ` (Адміністратор, роль: ${user.role})`;
+    }
+    message += `${index + 1}. ${user.name}, Вік: ${user.age}${roleInfo}<br>`;
+    user.display();
+  });
+  alert(message);
+}
+
+// Привязка обработчиков с bind для сохранения this
+document.getElementById('addUser Btn').addEventListener('click', addUser .bind(null, false));
+document.getElementById('addAdminBtn').addEventListener('click', addUser .bind(null, true));
+document.getElementById('showAllBtn').addEventListener('click', showAllUsers);
+
+</script>
+</body>
+</html>

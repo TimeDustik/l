@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Практична робота 6: Модульна система та ES6+</title>
+<style>
+  body {
+    margin: 0; padding: 0;
+    background-color: #000000;
+    color: #ff69b4;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+  }
+
+  h1 {
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  #app {
+    margin-top: 40px;
+    border: 3px solid #ff69b4;
+    padding: 30px 40px;
+    border-radius: 12px;
+    width: 280px;
+    text-align: center;
+    background-color: #1a1a1a;
+    box-shadow: 0 0 15px #ff69b4aa;
+    font-size: 18px;
+    line-height: 1.4;
+  }
+</style>
+</head>
+<body>
+  <h1>Практична робота No6: Модульна система та сучасні можливості ES6+</h1>
+  <div id="app">Завантаження...</div>
+
+  <script type="module">
+    "use strict";
+
+    // Простий приклад модулів inline (для демонстрації)
+
+    // utils.js модуль
+    const greet = (name) => console.log(`Привіт, ${name}!`);
+    const add = function(a, b) { return a + b; };
+    const multiply = (a, b) => a * b;
+
+    // data.js модуль
+    const user = { name: "Олена", age: 30, profession: "Інженер" };
+
+    console.log("Модульний код підключено!");
+
+    // Виклики функцій
+    greet("Студент");
+    console.log("10 + 5 =", add(10, 5));
+    console.log("10 * 5 =", multiply(10, 5));
+
+    const { name, age, profession } = user;
+    const info = `Користувач: ${name}, Вік: ${age}, Професія: ${profession}`;
+
+    console.log(info);
+
+    // Виведення в блок #app
+    const appDiv = document.getElementById("app");
+    appDiv.textContent = info;
+
+    // Spread/rest демонстрації (у консолі)
+    const numbers = [1, 2, 3];
+    const newNumbers = [...numbers, 4, 5];
+    console.log("Новий масив:", newNumbers);
+
+    const arr1 = [1, 2, 3];
+    const arr2 = [4, 5, 6];
+    const combined = [...arr1, ...arr2];
+    console.log("Об'єднаний масив:", combined);
+
+    function sumAll(...nums) {
+      return nums.reduce((acc, num) => acc + num, 0);
+    }
+    console.log("Сума:", sumAll(1, 2, 3, 4));
+  </script>
+</body>
+</html>
+
