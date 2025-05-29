@@ -81,7 +81,6 @@ function generateResume() {
             ${languages ? `<div class="resume-section"><h3>🗣️ Мови</h3><p>${languages}</p></div>` : ""}
             ${hobbies ? `<div class="resume-section"><h3>🎯 Хобі та інтереси</h3><p>${hobbies}</p></div>` : ""}
             <div style="text-align: center; margin-top: 30px;">
-                <button class="btn" onclick="downloadResumeAsPDF()">⬇️ Завантажити PDF</button>
             </div>
         </div>
     `;
