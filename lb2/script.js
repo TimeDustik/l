@@ -2,25 +2,25 @@
 
 let movies = [];
 
-async function fetchMovies() {
+async function searchMovies(query) {
     try {
-        const response = await fetch('https://api.tvmaze.com/shows');
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        movies = await response.json();
+        const response = await fetch(`https://api.tvmaze.com/search/shows?q=${encodeURIComponent(query)}`);
+        if (!response.ok) throw new Error('Network response was not ok');
+
+        const data = await response.json();
+        movies = data.map(item => item.show);
         displayMovies(movies);
     } catch (error) {
-        console.error('There was a problem with the fetch operation:', error);
+        console.error('Помилка при завантаженні:', error);
         alert('Не вдалося завантажити дані. Спробуйте ще раз.');
     }
 }
 
 function displayMovies(movies) {
     const container = document.getElementById('movies-container');
-    container.innerHTML = ''; // Очищення контейнера
+    container.innerHTML = '';
     if (movies.length === 0) {
-        container.innerHTML = '<p>Нічого не знайдено.</p>'; // Повідомлення, якщо немає результатів
+        container.innerHTML = '<p>Нічого не знайдено.</p>';
     } else {
         movies.forEach(({ id, name, summary, image }) => {
             const movieCard = `
@@ -37,9 +37,10 @@ function displayMovies(movies) {
 }
 
 document.getElementById('search-button').addEventListener('click', () => {
-    const searchTerm = document.getElementById('search').value.toLowerCase();
-    const filteredMovies = movies.filter(movie => movie.name.toLowerCase().includes(searchTerm));
-    displayMovies(filteredMovies);
+    const searchTerm = document.getElementById('search').value.trim();
+    if (searchTerm) {
+        searchMovies(searchTerm);
+    }
 });
 
 document.getElementById('sort-alphabet').addEventListener('click', () => {
@@ -48,9 +49,21 @@ document.getElementById('sort-alphabet').addEventListener('click', () => {
 });
 
 document.getElementById('sort-rating').addEventListener('click', () => {
-    const sortedMovies = [...movies].sort((a, b) => (b.rating && b.rating.average ? b.rating.average : 0) - (a.rating && a.rating.average ? a.rating.average : 0));
+    const sortedMovies = [...movies].sort((a, b) => (b.rating?.average ?? 0) - (a.rating?.average ?? 0));
     displayMovies(sortedMovies);
 });
+document.getElementById('search-button').addEventListener('click', () => {
+    const searchTerm = document.getElementById('search').value.trim();
+    if (searchTerm) {
+        searchMovies(searchTerm);
+    }
+});
 
-// Завантаження фільмів при завантаженні сторінки
-window.onload = fetchMovies;
+document.getElementById('search').addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+        const searchTerm = event.target.value.trim();
+        if (searchTerm) {
+            searchMovies(searchTerm);
+        }
+    }
+});
