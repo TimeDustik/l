@@ -1,0 +1,217 @@
+* {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d0000 100%);
+            color: #ffffff;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            background: rgba(220, 20, 60, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            border: 2px solid #dc143c;
+            box-shadow: 0 8px 32px rgba(220, 20, 60, 0.3);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            color: #dc143c;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            margin-bottom: 10px;
+        }
+
+        .form-section {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border: 1px solid #dc143c;
+            box-shadow: 0 4px 20px rgba(220, 20, 60, 0.2);
+        }
+
+        .form-section h2 {
+            color: #dc143c;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            border-bottom: 2px solid #dc143c;
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #ffffff;
+            font-weight: bold;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #333;
+            border-radius: 8px;
+            background: #1a1a1a;
+            color: #ffffff;
+            font-size: 14px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #dc143c;
+            box-shadow: 0 0 10px rgba(220, 20, 60, 0.5);
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #dc143c, #b91c3c);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            margin: 10px 5px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(220, 20, 60, 0.4);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(220, 20, 60, 0.6);
+            background: linear-gradient(45deg, #b91c3c, #dc143c);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(45deg, #333, #555);
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(45deg, #555, #777);
+        }
+
+        .error {
+            color: #ff6b6b;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .success {
+            color: #51cf66;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .resume-display {
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            padding: 40px;
+            border-radius: 15px;
+            margin-top: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 2px solid #dc143c;
+        }
+
+        .resume-header {
+            text-align: center;
+            border-bottom: 3px solid #dc143c;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .resume-name {
+            font-size: 2.2em;
+            color: #dc143c;
+            margin-bottom: 10px;
+        }
+
+        .resume-section {
+            margin-bottom: 25px;
+        }
+
+        .resume-section h3 {
+            color: #dc143c;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            border-left: 4px solid #dc143c;
+            padding-left: 15px;
+        }
+
+        .experience-item, .education-item {
+            background: rgba(220, 20, 60, 0.05);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 3px solid #dc143c;
+        }
+
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .skill-tag {
+            background: #dc143c;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .loading {
+            text-align: center;
+            color: #dc143c;
+            font-size: 18px;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .form-section {
+                padding: 20px;
+            }
+        }
+
+        .dynamic-form {
+            border: 1px dashed #dc143c;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            background: rgba(220, 20, 60, 0.05);
+        }
+
+        .remove-btn {
+            background: #ff4757;
+            padding: 5px 10px;
+            font-size: 12px;
+            margin-top: 10px;
+        }
