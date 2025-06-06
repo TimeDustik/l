@@ -4,49 +4,116 @@ const taskInput = document.getElementById("taskInput");
 const addTaskButton = document.getElementById("addTask");
 const taskList = document.getElementById("taskList");
 
-// Функція для завантаження завдань з localStorage
+let editingIndex = -1;
+
 function loadTasks() {
     const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-    tasks.forEach(task => {
-        addTaskToDOM(task);
+    renderTasks(tasks);
+}
+
+function renderTasks(tasks) {
+    taskList.innerHTML = "";
+    tasks.forEach((task, index) => {
+        addTaskToDOM(task, index);
     });
 }
 
-// Функція для додавання завдання в DOM
-function addTaskToDOM(task) {
+function addTaskToDOM(task, index) {
     const li = document.createElement("li");
-    li.textContent = task;
-    li.addEventListener("click", function() {
-        removeTask(task);
-    });
+    
+    if (editingIndex === index) {
+
+        li.innerHTML = `
+            <div class="editing-mode">
+                <input type="text" class="edit-input" value="${task.replace(/"/g, '&quot;')}" id="editInput${index}">
+                <div class="edit-buttons">
+                    <button class="save-btn" onclick="saveTask(${index})">Зберегти</button>
+                    <button class="cancel-btn" onclick="cancelEdit()">Скасувати</button>
+                </div>
+            </div>
+        `;
+    } else {
+
+        li.innerHTML = `
+            <div class="task-content" onclick="removeTask(${index})">${task}</div>
+            <div class="edit-container">
+                <button class="edit-btn" onclick="editTask(${index})"></button>
+            </div>
+        `;
+    }
+    
     taskList.appendChild(li);
 }
 
-// Функція для додавання завдання
 addTaskButton.addEventListener("click", function() {
     const taskText = taskInput.value.trim();
     if (taskText) {
-        addTaskToDOM(taskText);
-        saveTask(taskText);
-        taskInput.value = ""; // Очистити поле після додавання
+        const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+        tasks.push(taskText);
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+        renderTasks(tasks);
+        taskInput.value = "";
     }
 });
 
-// Функція для збереження завдання в localStorage
-function saveTask(task) {
+taskInput.addEventListener("keypress", function(e) {
+    if (e.key === "Enter") {
+        addTaskButton.click();
+    }
+});
+
+function editTask(index) {
+    editingIndex = index;
     const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-    tasks.push(task);
+    renderTasks(tasks);
+    
+    setTimeout(() => {
+        const editInput = document.getElementById(`editInput${index}`);
+        if (editInput) {
+            editInput.focus();
+            editInput.select();
+        }
+    }, 0);
+}
+
+function saveTask(index) {
+    const editInput = document.getElementById(`editInput${index}`);
+    const newText = editInput.value.trim();
+    
+    if (newText) {
+        const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+        tasks[index] = newText;
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+        editingIndex = -1;
+        renderTasks(tasks);
+    }
+}
+
+function cancelEdit() {
+    editingIndex = -1;
+    const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    renderTasks(tasks);
+}
+
+function removeTask(index) {
+    const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    tasks.splice(index, 1);
     localStorage.setItem("tasks", JSON.stringify(tasks));
+    editingIndex = -1;
+    renderTasks(tasks);
 }
 
-// Функція для видалення завдання
-function removeTask(task) {
-    const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-    const updatedTasks = tasks.filter(t => t !== task);
-    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
-    taskList.innerHTML = ""; // Очищення списку
-    loadTasks(); // Перезавантаження завдань
-}
+document.addEventListener("keypress", function(e) {
+    if (e.key === "Enter" && e.target.classList.contains("edit-input")) {
+        const index = parseInt(e.target.id.replace("editInput", ""));
+        saveTask(index);
+    }
+});
 
-// Завантаження завдань при завантаженні сторінки
+document.addEventListener("keydown", function(e) {
+    if (e.key === "Escape" && editingIndex !== -1) {
+        cancelEdit();
+    }
+});
+
 loadTasks();
